@@ -1,6 +1,7 @@
 ﻿======================================
 25 Augest 2019
--Rewrite using PyQt5 as PyQt4 is deprecated
+-Rewrite using PyQt5 as PyQt4 is deprecated and ported to py3
+	-only the ability to render/show the GUI has been tested	
 ======================================
 22 Dicembre 2012
 -Scanner WIFI:	-migliorata compatibilità nel codice (un solo file per linux e windows)
