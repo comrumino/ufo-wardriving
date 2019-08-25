@@ -64,7 +64,7 @@ def calc(mac2):
     if len(mac2) == 17:
         mac2 = mac2.replace(":", "")
     else:
-        print "Formato MAC non valido"
+        print("Formato MAC non valido")
         sys.exit()
 
     while i < 12:

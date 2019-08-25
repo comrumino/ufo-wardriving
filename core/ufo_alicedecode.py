@@ -62,7 +62,7 @@ def calc(ssid, mac):
                         hash3.update(mac)
                         c3 = hash3.hexdigest()
                         chdec3 = c3[:48]
-                        b3 = [chdec3[x:x + 2] for x in xrange(0, len(chdec3), 2)]
+                        b3 = [chdec3[x:x + 2] for x in range(0, len(chdec3), 2)]
                         for bytes3 in b3:
                             inc = int(bytes3, 16)
                             pwd = pwd + charset[inc]
@@ -77,7 +77,7 @@ def calc(ssid, mac):
                         hash2.update(mac)
                         c2 = hash2.hexdigest()
                         chdec2 = c2[:48]
-                        b2 = [chdec2[x:x + 2] for x in xrange(0, len(chdec2), 2)]
+                        b2 = [chdec2[x:x + 2] for x in range(0, len(chdec2), 2)]
                         for bytes2 in b2:
                             inc = int(bytes2, 16)
                             pwd = pwd + charset[inc]
@@ -92,7 +92,7 @@ def calc(ssid, mac):
                         hash1.update(mac)
                         c1 = hash1.hexdigest()
                         chdec1 = c1[:48]
-                        b1 = [chdec1[x:x + 2] for x in xrange(0, len(chdec1), 2)]
+                        b1 = [chdec1[x:x + 2] for x in range(0, len(chdec1), 2)]
                         for bytes1 in b1:
                             inc = int(bytes1, 16)
                             pwd = pwd + charset[inc]
@@ -107,7 +107,7 @@ def calc(ssid, mac):
                         hash.update(mac)
                         c = hash.hexdigest()
                         chdec = c[:48]
-                        b = [chdec[x:x + 2] for x in xrange(0, len(chdec), 2)]
+                        b = [chdec[x:x + 2] for x in range(0, len(chdec), 2)]
                         for bytes in b:
                             inc = int(bytes, 16)
                             pwd = pwd + charset[inc]
@@ -135,7 +135,7 @@ def calc(ssid, mac):
                         hash3.update(completo)
                         c3 = hash3.hexdigest()
                         chdec3 = c3[:48]
-                        b3 = [chdec3[x:x + 2] for x in xrange(0, len(chdec3), 2)]
+                        b3 = [chdec3[x:x + 2] for x in range(0, len(chdec3), 2)]
                         for bytes3 in b3:
                             inc = int(bytes3, 16)
                             pwd = pwd + charset[inc]
@@ -150,7 +150,7 @@ def calc(ssid, mac):
                         hash2.update(completo)
                         c2 = hash2.hexdigest()
                         chdec2 = c2[:48]
-                        b2 = [chdec2[x:x + 2] for x in xrange(0, len(chdec2), 2)]
+                        b2 = [chdec2[x:x + 2] for x in range(0, len(chdec2), 2)]
                         for bytes2 in b2:
                             inc = int(bytes2, 16)
                             pwd = pwd + charset[inc]
@@ -165,7 +165,7 @@ def calc(ssid, mac):
                         hash1.update(completo)
                         c1 = hash1.hexdigest()
                         chdec1 = c1[:48]
-                        b1 = [chdec1[x:x + 2] for x in xrange(0, len(chdec1), 2)]
+                        b1 = [chdec1[x:x + 2] for x in range(0, len(chdec1), 2)]
                         for bytes1 in b1:
                             inc = int(bytes1, 16)
                             pwd = pwd + charset[inc]
@@ -180,7 +180,7 @@ def calc(ssid, mac):
                         hash.update(completo)
                         c = hash.hexdigest()
                         chdec = c[:48]
-                        b = [chdec[x:x + 2] for x in xrange(0, len(chdec), 2)]
+                        b = [chdec[x:x + 2] for x in range(0, len(chdec), 2)]
                         for bytes in b:
                             inc = int(bytes, 16)
                             pwd = pwd + charset[inc]
