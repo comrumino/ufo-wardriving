@@ -28,8 +28,10 @@
 '''
 
 import os, time
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QAction, qApp, QAction, QApplication,QHBoxLayout,QMainWindow,QMessageBox,QSplashScreen,QTabWidget,QVBoxLayout,QWidget
+#QAction,QApplication,QHBoxLayout,QLocale,QMainWindow,QMessageBox,QPixmap,QSplashScreen,QTabWidget,QTranslator,QVBoxLayout,QWidget
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 import sys, os.path
 import webbrowser
 import platform
@@ -62,15 +64,15 @@ def main(args):
 def getTranslator():
 	translator = QTranslator()
 	locale = QLocale.system().name()
-	if translator.load(QString.fromUtf8(repr(os.path.dirname(\
+	if translator.load(repr(os.path.dirname(\
 			os.path.realpath(sys.argv[0]))).replace("\\\\","/")\
-			.replace("\'","")+"/locale/UFO_"+locale+".qm")) :
+			.replace("\'","")+"/locale/UFO_"+locale+".qm") :
 		return translator
 
 def activateSplashScreen():
-	splash_pix = QPixmap(QString.fromUtf8(repr(os.path.dirname(\
+	splash_pix = QPixmap(repr(os.path.dirname(\
 			os.path.realpath(sys.argv[0]))).replace("\\\\","/")\
-			.replace("\'","")+"/pics/splash.png"))
+			.replace("\'","")+"/pics/splash.png")
 	splash = QSplashScreen( splash_pix)
 	splash.setMask(splash_pix.mask())
 	splash.show()
@@ -151,9 +153,11 @@ class MainWindow(QMainWindow):
 		self.tabWidget = QTabWidget(self.mainWidget)
 		hBox.addWidget(self.tabWidget)
 
+                print('c')
 		scanWidget= scannerGuiWidget(self)
 		hBox.addWidget(scanWidget)
 		scanWidget.setVisible(0)
+                print('d')
 
 		self.fastwebTab	= QWidget(self.tabWidget)
 		self.speedTab	= QWidget(self.tabWidget)

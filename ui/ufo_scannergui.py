@@ -28,8 +28,9 @@
 '''
 
 import os
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QAction, qApp, QAction, QApplication,QHBoxLayout,QMainWindow,QMessageBox,QSplashScreen,QTabWidget,QVBoxLayout,QWidget, QLabel, QPushButton, QListWidget
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 import sys, os.path
 import subprocess
 import re
@@ -126,9 +127,7 @@ class scannerGuiWidget(QWidget):
 				outputListWI.clear()
 				cmd = "netsh wlan show networks mode=bssid"
 				out = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
-				out = out.stdout.read()
-				output = QString(out)
-				ssdlist = QStringList
+				output = out.stdout.read()
 				ssdlist= output.split(QRegExp("[^B]SSID"))
 				cellsnumber = ssdlist.count()
 				n_rete = 1
@@ -143,7 +142,6 @@ class scannerGuiWidget(QWidget):
 						
 
 				while n_rete != cellsnumber:
-					infocellist = QStringList
 					infocelllist =ssdlist[n_rete].split("\n")
 					nomerete = str(infocelllist[0].section(":",1,-1))
 					tiporete = str(infocelllist[1].section(":",1,-1))
@@ -194,6 +192,7 @@ class scannerGuiWidget(QWidget):
 				scan_net = subprocess.Popen("iwconfig", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 				schede_rete = scan_net.stdout.readlines()
 				schede_rete = [x.split(None, 1)[0] for x in schede_rete if 'IEEE 802.11' in x]
+                                buf = []
 				for schede in schede_rete:
 					schede = schede[0:]
 					reti = subprocess.Popen(["iwlist", schede, "scanning"], stdout=subprocess.PIPE)
@@ -222,17 +221,17 @@ class scannerGuiWidget(QWidget):
 						item.setFrequency(frequenza)
 
 					if "Signal" in data :
-						signal = QString(data)
+						signal = data
 						second = signal.section("level=",1,-1).remove(" dBm")
 						item.setdBmValue(second)
 					if "IE:" in data:
 							if "IEEE " in data:
-								encr = QString(data)
+								encr = data
 								encr = encr.section("i/",1,-1).replace("\n","")
 								if encr.contains("unknow"):	encr = "Unknow"
 								item.setEncription(encr)
 							else:
-								encr2 = QString(data)
+								encr2 = data
 								encr2 = encr2.section("E: ",1,-1).replace("\n","")
 								item.setEncription2(encr2)
 					if "(Channel" in data :

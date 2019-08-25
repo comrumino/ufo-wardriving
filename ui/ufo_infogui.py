@@ -28,8 +28,9 @@
 '''
 
 import os
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtWidgets import QHBoxLayout,QLabel,QLineEdit,QPushButton,QTextEdit,QVBoxLayout,QWidget
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 import sys, os.path
 
 from core import ufo_infostradadecode

@@ -27,8 +27,9 @@
 //=============================================================================
 '''
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtWidgets import QListWidgetItem
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 import sys, os.path,platform
 
 from core.ufo_picsfinder import getQIcon
