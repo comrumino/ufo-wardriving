@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 
 
-
-from binascii import unhexlify 
-from hashlib  import md5
+from binascii import unhexlify
+from hashlib import md5
 import sys
 
 
@@ -18,14 +17,12 @@ def calc(ssid):
         return hex_err
     alfa   = unhexlify(ssid)
     beta   = unhexlify('223311340281FA22114168111201052271421066')
-    digest = int(md5(alfa+beta).hexdigest(), 16)
+    digest = int(md5(alfa + beta).hexdigest(), 16)
     wpa    = ''
-    for i in range(123,0,-5):
+    for i in range(123, 0, -5):
         chunk = digest >> i & 0b11111
-        if chunk > 9: 
+        if chunk > 9:
             chunk += 87
         wpa += '%02x' % chunk
     key = wpa[0:10]
     return key
-
-

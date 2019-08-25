@@ -28,80 +28,81 @@
 '''
 
 import os
-from PyQt5.QtWidgets import QHBoxLayout,QLabel,QLineEdit,QPushButton,QTextEdit,QVBoxLayout,QWidget
+from PyQt5.QtWidgets import QHBoxLayout, QLabel, QLineEdit, QPushButton, QTextEdit, QVBoxLayout, QWidget
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-import sys, os.path
+import sys
+import os.path
 
 from core import ufo_jazzteldecode
 
 from core.ufo_picsfinder import getQIcon
 
+
 class jazztelGuiWidget(QWidget):
-	@staticmethod
-	def findKey(self):
-		mac_jazztel = str(self.macLineEdit.text())
-		ssid_jazztel = str(self.ssidLineEdit.text())
-		mac_jazztel = mac_jazztel.replace(" ","")
-		ssid_jazztel = ssid_jazztel.replace(" ","")
-		stdouterr_jazztel = ufo_jazzteldecode.calc(ssid_jazztel, mac_jazztel)
-		if stdouterr_jazztel:
-			self.outputTextEdit.setText(stdouterr_jazztel)
-		else:
-			self.outputTextEdit.setText(self.tr("No key found."))
+    @staticmethod
+    def findKey(self):
+        mac_jazztel = str(self.macLineEdit.text())
+        ssid_jazztel = str(self.ssidLineEdit.text())
+        mac_jazztel = mac_jazztel.replace(" ", "")
+        ssid_jazztel = ssid_jazztel.replace(" ", "")
+        stdouterr_jazztel = ufo_jazzteldecode.calc(ssid_jazztel, mac_jazztel)
+        if stdouterr_jazztel:
+            self.outputTextEdit.setText(stdouterr_jazztel)
+        else:
+            self.outputTextEdit.setText(self.tr("No key found."))
 
-	def __init__(self, parent = None):
-		super(jazztelGuiWidget, self).__init__(parent)
+    def __init__(self, parent=None):
+        super(jazztelGuiWidget, self).__init__(parent)
 
-		hBoxLayoutSsid = QHBoxLayout()
-		hBoxLayoutSsid.setSpacing(5)
-		hBoxLayoutMac = QHBoxLayout()
-		hBoxLayoutMac.setSpacing(5)
+        hBoxLayoutSsid = QHBoxLayout()
+        hBoxLayoutSsid.setSpacing(5)
+        hBoxLayoutMac = QHBoxLayout()
+        hBoxLayoutMac.setSpacing(5)
 
-		vBoxLayout = QVBoxLayout()
-		vBoxLayout.setSpacing(5)
+        vBoxLayout = QVBoxLayout()
+        vBoxLayout.setSpacing(5)
 
-		ssidLabel = QLabel("SID:",self)
-		self.ssidLineEdit= QLineEdit(self)
+        ssidLabel = QLabel("SID:", self)
+        self.ssidLineEdit = QLineEdit(self)
 #		Sembra servano gli ultimi 4 caratteri dell'essid JAZZTEL_XXXX
-		self.ssidLineEdit.setToolTip("SSID "+self.tr("Compatible")+" :\nJazztel*")
-		self.ssidLineEdit.setMaxLength(4)
-		self.ssidLineEdit.setInputMask("HHHH;-")
+        self.ssidLineEdit.setToolTip("SSID " + self.tr("Compatible") + " :\nJazztel*")
+        self.ssidLineEdit.setMaxLength(4)
+        self.ssidLineEdit.setInputMask("HHHH;-")
 
-		macLabel = QLabel("MAC:",self)
-		self.macLineEdit= QLineEdit(self)
-		self.macLineEdit.setInputMask("HH:HH:HH:HH:HH:HH;_")
+        macLabel = QLabel("MAC:", self)
+        self.macLineEdit = QLineEdit(self)
+        self.macLineEdit.setInputMask("HH:HH:HH:HH:HH:HH;_")
 
-		self.outputTextEdit = QTextEdit(self)
-		self.outputTextEdit.setReadOnly(True)
+        self.outputTextEdit = QTextEdit(self)
+        self.outputTextEdit.setReadOnly(True)
 
-		self.calcPushButton = QPushButton(self.tr("Find"),self)
-		self.calcPushButton.setIcon(getQIcon("key.png"))
-		self.calcPushButton.setEnabled(0)
+        self.calcPushButton = QPushButton(self.tr("Find"), self)
+        self.calcPushButton.setIcon(getQIcon("key.png"))
+        self.calcPushButton.setEnabled(0)
 
-		hBoxLayoutSsid.addWidget(ssidLabel)
-		hBoxLayoutSsid.addWidget(self.ssidLineEdit)
-		hBoxLayoutMac.addWidget(macLabel)
-		hBoxLayoutMac.addWidget(self.macLineEdit)
+        hBoxLayoutSsid.addWidget(ssidLabel)
+        hBoxLayoutSsid.addWidget(self.ssidLineEdit)
+        hBoxLayoutMac.addWidget(macLabel)
+        hBoxLayoutMac.addWidget(self.macLineEdit)
 
-		hBoxLayoutSsid.addWidget(self.calcPushButton)
+        hBoxLayoutSsid.addWidget(self.calcPushButton)
 
-		vBoxLayout.addLayout(hBoxLayoutSsid)
-		vBoxLayout.addLayout(hBoxLayoutMac)
-		vBoxLayout.addWidget(self.outputTextEdit)
+        vBoxLayout.addLayout(hBoxLayoutSsid)
+        vBoxLayout.addLayout(hBoxLayoutMac)
+        vBoxLayout.addWidget(self.outputTextEdit)
 
+        self.setLayout(vBoxLayout)
 
-		self.setLayout(vBoxLayout)
+        def slotFindKey():
+            self.findKey(self)
 
-		def slotFindKey():
-				self.findKey(self)
+        def enableBtn():
+            if self.macLineEdit.text().length() == 17 and self.ssidLineEdit.text().length() == 4:
+                self.calcPushButton.setEnabled(1)
+            else:
+                self.calcPushButton.setEnabled(0)
 
-		def enableBtn():
-			if self.macLineEdit.text().length()==17 and self.ssidLineEdit.text().length()==4:
-				self.calcPushButton.setEnabled(1)
-			else:
-				self.calcPushButton.setEnabled(0)
-
-		self.ssidLineEdit.textChanged.connect(enableBtn)
-		self.macLineEdit.textChanged.connect(enableBtn)
-		self.calcPushButton.clicked.connect(slotFindKey)
+        self.ssidLineEdit.textChanged.connect(enableBtn)
+        self.macLineEdit.textChanged.connect(enableBtn)
+        self.calcPushButton.clicked.connect(slotFindKey)

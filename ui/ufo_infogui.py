@@ -28,63 +28,64 @@
 '''
 
 import os
-from PyQt5.QtWidgets import QHBoxLayout,QLabel,QLineEdit,QPushButton,QTextEdit,QVBoxLayout,QWidget
+from PyQt5.QtWidgets import QHBoxLayout, QLabel, QLineEdit, QPushButton, QTextEdit, QVBoxLayout, QWidget
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-import sys, os.path
+import sys
+import os.path
 
 from core import ufo_infostradadecode
 from core.ufo_picsfinder import getQIcon
 
+
 class infostradaGuiWidget(QWidget):
-	@staticmethod
-	def findKey(self):
-		mac_infostrada = str(self.macLineEdit.text())
-		mac_infostrada = mac_infostrada.replace(" ","")
-		stdouterr_infostrada = ufo_infostradadecode.calc(mac_infostrada)
-		if stdouterr_infostrada:
-			self.outputTextEdit.setText(stdouterr_infostrada)
-		else:
-			self.outputTextEdit.setText(self.tr("No key found."))
+    @staticmethod
+    def findKey(self):
+        mac_infostrada = str(self.macLineEdit.text())
+        mac_infostrada = mac_infostrada.replace(" ", "")
+        stdouterr_infostrada = ufo_infostradadecode.calc(mac_infostrada)
+        if stdouterr_infostrada:
+            self.outputTextEdit.setText(stdouterr_infostrada)
+        else:
+            self.outputTextEdit.setText(self.tr("No key found."))
 
-	def __init__(self, parent = None):
-		super(infostradaGuiWidget, self).__init__(parent)
+    def __init__(self, parent=None):
+        super(infostradaGuiWidget, self).__init__(parent)
 
-		hboxLayout = QHBoxLayout()
-		hboxLayout.setSpacing(5)
+        hboxLayout = QHBoxLayout()
+        hboxLayout.setSpacing(5)
 
-		vboxLayout = QVBoxLayout()
-		vboxLayout.setSpacing(5)
+        vboxLayout = QVBoxLayout()
+        vboxLayout.setSpacing(5)
 
-		macLabel = QLabel("MAC:",self)
-		self.macLineEdit= QLineEdit(self)
-		self.macLineEdit.setToolTip("SSID "+self.tr("Compatible")+" : \nInfostradaWIFI-*")
-		self.macLineEdit.setInputMask("HH:HH:HH:HH:HH:HH;_")
+        macLabel = QLabel("MAC:", self)
+        self.macLineEdit = QLineEdit(self)
+        self.macLineEdit.setToolTip("SSID " + self.tr("Compatible") + " : \nInfostradaWIFI-*")
+        self.macLineEdit.setInputMask("HH:HH:HH:HH:HH:HH;_")
 
-		self.outputTextEdit = QTextEdit(self)
-		self.outputTextEdit.setReadOnly(True)
+        self.outputTextEdit = QTextEdit(self)
+        self.outputTextEdit.setReadOnly(True)
 
-		self.calcPushButton = QPushButton(self.tr("Find"),self)
-		self.calcPushButton.setIcon(getQIcon("key.png"))
-		self.calcPushButton.setEnabled(0)
+        self.calcPushButton = QPushButton(self.tr("Find"), self)
+        self.calcPushButton.setIcon(getQIcon("key.png"))
+        self.calcPushButton.setEnabled(0)
 
-		hboxLayout.addWidget(macLabel)
-		hboxLayout.addWidget(self.macLineEdit)
-		hboxLayout.addWidget(self.calcPushButton)
-		vboxLayout.addLayout(hboxLayout)
-		vboxLayout.addWidget(self.outputTextEdit)
+        hboxLayout.addWidget(macLabel)
+        hboxLayout.addWidget(self.macLineEdit)
+        hboxLayout.addWidget(self.calcPushButton)
+        vboxLayout.addLayout(hboxLayout)
+        vboxLayout.addWidget(self.outputTextEdit)
 
+        self.setLayout(vboxLayout)
 
-		self.setLayout(vboxLayout)
+        def slotFindKey():
+            self.findKey(self)
 
-		def slotFindKey():
-				self.findKey(self)
+        def enableBtn():
+            if self.macLineEdit.text().length() == 17:
+                self.calcPushButton.setEnabled(1)
+            else:
+                self.calcPushButton.setEnabled(0)
 
-		def enableBtn():
-			if self.macLineEdit.text().length()==17:
-				self.calcPushButton.setEnabled(1)
-			else:
-				self.calcPushButton.setEnabled(0)
-
-		self.macLineEdit.textChanged.connect(enableBtn)
-		self.calcPushButton.clicked.connect(slotFindKey)
+        self.macLineEdit.textChanged.connect(enableBtn)
+        self.calcPushButton.clicked.connect(slotFindKey)

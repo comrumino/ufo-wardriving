@@ -1,5 +1,6 @@
 from string import hexdigits
 
+
 def calc(mac):
     err_mac = "MAC Errato"
     err_hex = "MAC non esadecimale"
@@ -29,4 +30,3 @@ def calc(mac):
         chiave.append(chiavi)
     chiave = "".join(chiave)
     return chiave
-

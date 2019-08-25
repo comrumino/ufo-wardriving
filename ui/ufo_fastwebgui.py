@@ -28,61 +28,63 @@
 '''
 
 import os
-from PyQt5.QtWidgets import QHBoxLayout,QLabel,QLineEdit,QPushButton,QTextEdit,QVBoxLayout,QWidget
+from PyQt5.QtWidgets import QHBoxLayout, QLabel, QLineEdit, QPushButton, QTextEdit, QVBoxLayout, QWidget
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-import sys, os.path
+import sys
+import os.path
 
 from core import ufo_fastwebdecode
 from core.ufo_picsfinder import getQIcon
 
+
 class fastGuiWidget(QWidget):
-	@staticmethod
-	def findKey(self):
-		ssid_fast = str(self.macLineEdit.text())
-		stdouterr_fast = ufo_fastwebdecode.calc(ssid_fast)
-		if stdouterr_fast:
-			self.outputTextEdit.setText(stdouterr_fast)
-		else:
-			self.outputTextEdit.setText(self.tr("No key found."))
+    @staticmethod
+    def findKey(self):
+        ssid_fast = str(self.macLineEdit.text())
+        stdouterr_fast = ufo_fastwebdecode.calc(ssid_fast)
+        if stdouterr_fast:
+            self.outputTextEdit.setText(stdouterr_fast)
+        else:
+            self.outputTextEdit.setText(self.tr("No key found."))
 
-	def __init__(self,parent = None):
-		super(fastGuiWidget, self).__init__(parent)
-		hBoxLayout = QHBoxLayout()
-		hBoxLayout.setSpacing(5)
+    def __init__(self, parent=None):
+        super(fastGuiWidget, self).__init__(parent)
+        hBoxLayout = QHBoxLayout()
+        hBoxLayout.setSpacing(5)
 
-		vBoxLayout = QVBoxLayout()
-		vBoxLayout.setSpacing(5)
+        vBoxLayout = QVBoxLayout()
+        vBoxLayout.setSpacing(5)
 
-		self.macLabel = QLabel("SSID:",self)
-		self.macLineEdit= QLineEdit(self)
-		self.macLineEdit.setToolTip("SSID "+self.tr("Compatible")+" : Fastweb-1-*")
-		self.macLineEdit.setInputMask("HHHHHHHHHHHH;-")
-		self.macLineEdit.setMaxLength(12)
+        self.macLabel = QLabel("SSID:", self)
+        self.macLineEdit = QLineEdit(self)
+        self.macLineEdit.setToolTip("SSID " + self.tr("Compatible") + " : Fastweb-1-*")
+        self.macLineEdit.setInputMask("HHHHHHHHHHHH;-")
+        self.macLineEdit.setMaxLength(12)
 
-		self.outputTextEdit = QTextEdit(self)
-		self.outputTextEdit.setReadOnly(True)
+        self.outputTextEdit = QTextEdit(self)
+        self.outputTextEdit.setReadOnly(True)
 
-		self.calcPushButton = QPushButton(self.tr("Find"),self)
-		self.calcPushButton.setIcon(getQIcon("key.png"))
-		self.calcPushButton.setEnabled(0)
+        self.calcPushButton = QPushButton(self.tr("Find"), self)
+        self.calcPushButton.setIcon(getQIcon("key.png"))
+        self.calcPushButton.setEnabled(0)
 
-		hBoxLayout.addWidget(self.macLabel)
-		hBoxLayout.addWidget(self.macLineEdit)
-		hBoxLayout.addWidget(self.calcPushButton)
-		vBoxLayout.addLayout(hBoxLayout)
-		vBoxLayout.addWidget(self.outputTextEdit)
+        hBoxLayout.addWidget(self.macLabel)
+        hBoxLayout.addWidget(self.macLineEdit)
+        hBoxLayout.addWidget(self.calcPushButton)
+        vBoxLayout.addLayout(hBoxLayout)
+        vBoxLayout.addWidget(self.outputTextEdit)
 
-		self.setLayout(vBoxLayout)
-		
-		def slotFindKey():
-				self.findKey(self)
+        self.setLayout(vBoxLayout)
 
-		def enableBtn():
-			if self.macLineEdit.text().length()==12:
-				self.calcPushButton.setEnabled(1)
-			else:
-				self.calcPushButton.setEnabled(0)
+        def slotFindKey():
+            self.findKey(self)
 
-		self.macLineEdit.textChanged.connect(enableBtn)
-		self.calcPushButton.clicked.connect(slotFindKey)
+        def enableBtn():
+            if self.macLineEdit.text().length() == 12:
+                self.calcPushButton.setEnabled(1)
+            else:
+                self.calcPushButton.setEnabled(0)
+
+        self.macLineEdit.textChanged.connect(enableBtn)
+        self.calcPushButton.clicked.connect(slotFindKey)

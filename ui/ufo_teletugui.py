@@ -28,63 +28,65 @@
 '''
 
 import os
-from PyQt5.QtWidgets import QHBoxLayout,QLabel,QLineEdit,QPushButton,QTextEdit,QVBoxLayout,QWidget
+from PyQt5.QtWidgets import QHBoxLayout, QLabel, QLineEdit, QPushButton, QTextEdit, QVBoxLayout, QWidget
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-import sys, os.path
+import sys
+import os.path
 
 from core.ufo_picsfinder import getQIcon
 
 from core import ufo_teletudecode
 
+
 class teletuGuiWidget(QWidget):
-	@staticmethod
-	def findKey(self):
-		mac_teletu = str(self.lineEditTeletu.text())
-		mac_teletu = mac_teletu.replace(" ","")
-		stdouterr_teletu = ufo_teletudecode.calc(mac_teletu)
-		if stdouterr_teletu == 0:
-			self.outputTextEdit.setText(self.tr("No key found."))
-		else:
-			self.outputTextEdit.setText(stdouterr_teletu)
+    @staticmethod
+    def findKey(self):
+        mac_teletu = str(self.lineEditTeletu.text())
+        mac_teletu = mac_teletu.replace(" ", "")
+        stdouterr_teletu = ufo_teletudecode.calc(mac_teletu)
+        if stdouterr_teletu == 0:
+            self.outputTextEdit.setText(self.tr("No key found."))
+        else:
+            self.outputTextEdit.setText(stdouterr_teletu)
 
-	def __init__(self, parent = None):
-		super(teletuGuiWidget, self).__init__(parent)
+    def __init__(self, parent=None):
+        super(teletuGuiWidget, self).__init__(parent)
 
-		hBoxTeletu = QHBoxLayout()
-		hBoxTeletu.setSpacing(5)
+        hBoxTeletu = QHBoxLayout()
+        hBoxTeletu.setSpacing(5)
 
-		vBoxTeletu = QVBoxLayout()
-		vBoxTeletu.setSpacing(5)
+        vBoxTeletu = QVBoxLayout()
+        vBoxTeletu.setSpacing(5)
 
-		labelTeletu = QLabel("MAC:",self)
-		self.lineEditTeletu= QLineEdit(self)
-		self.lineEditTeletu.setToolTip("SSID "+self.tr("Compatible")+" : \nTeleTu_ \nTele2")
-		self.lineEditTeletu.setInputMask("HH:HH:HH:HH:HH:HH;_")
+        labelTeletu = QLabel("MAC:", self)
+        self.lineEditTeletu = QLineEdit(self)
+        self.lineEditTeletu.setToolTip("SSID " + self.tr("Compatible") + " : \nTeleTu_ \nTele2")
+        self.lineEditTeletu.setInputMask("HH:HH:HH:HH:HH:HH;_")
 
-		self.outputTextEdit = QTextEdit(self)
-		self.outputTextEdit.setReadOnly(True)
+        self.outputTextEdit = QTextEdit(self)
+        self.outputTextEdit.setReadOnly(True)
 
-		self.buttonCalc = QPushButton(self.tr("Find"),self)
-		self.buttonCalc.setIcon(getQIcon("key.png"))
-		self.buttonCalc.setEnabled(0)
+        self.buttonCalc = QPushButton(self.tr("Find"), self)
+        self.buttonCalc.setIcon(getQIcon("key.png"))
+        self.buttonCalc.setEnabled(0)
 
-		hBoxTeletu.addWidget(labelTeletu)
-		hBoxTeletu.addWidget(self.lineEditTeletu)
-		hBoxTeletu.addWidget(self.buttonCalc)
-		vBoxTeletu.addLayout(hBoxTeletu)
-		vBoxTeletu.addWidget(self.outputTextEdit)
+        hBoxTeletu.addWidget(labelTeletu)
+        hBoxTeletu.addWidget(self.lineEditTeletu)
+        hBoxTeletu.addWidget(self.buttonCalc)
+        vBoxTeletu.addLayout(hBoxTeletu)
+        vBoxTeletu.addWidget(self.outputTextEdit)
 
-		self.setLayout(vBoxTeletu)
+        self.setLayout(vBoxTeletu)
 
-		def slotFindKey():
-				self.findKey(self)
+        def slotFindKey():
+            self.findKey(self)
 
-		def enableBtn():
-			if self.lineEditTeletu.text().length()==17:
-				self.buttonCalc.setEnabled(1)
-			else:
-				self.buttonCalc.setEnabled(0)
+        def enableBtn():
+            if self.lineEditTeletu.text().length() == 17:
+                self.buttonCalc.setEnabled(1)
+            else:
+                self.buttonCalc.setEnabled(0)
 
-		self.lineEditTeletu.textChanged.connect(enableBtn)
-		self.buttonCalc.clicked.connect(slotFindKey)
+        self.lineEditTeletu.textChanged.connect(enableBtn)
+        self.buttonCalc.clicked.connect(slotFindKey)

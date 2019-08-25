@@ -27,12 +27,14 @@
 //=============================================================================
 '''
 
-import os, time
-from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QAction, qApp, QAction, QApplication,QHBoxLayout,QMainWindow,QMessageBox,QSplashScreen,QTabWidget,QVBoxLayout,QWidget
-#QAction,QApplication,QHBoxLayout,QLocale,QMainWindow,QMessageBox,QPixmap,QSplashScreen,QTabWidget,QTranslator,QVBoxLayout,QWidget
+import os
+import time
+from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QAction, qApp, QAction, QApplication, QHBoxLayout, QMainWindow, QMessageBox, QSplashScreen, QTabWidget, QVBoxLayout, QWidget
+# QAction,QApplication,QHBoxLayout,QLocale,QMainWindow,QMessageBox,QPixmap,QSplashScreen,QTabWidget,QTranslator,QVBoxLayout,QWidget
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-import sys, os.path
+import sys
+import os.path
 import webbrowser
 import platform
 import subprocess
@@ -50,177 +52,178 @@ from ui.ufo_yacomgui import yacomGuiWidget
 from ui.ufo_scannergui import scannerGuiWidget
 
 
-
-
 def main(args):
-	app=QApplication(args)
-	translator= getTranslator()
-	app.installTranslator(translator)
-	form = MainWindow()
-	activateSplashScreen().finish(form)
-	form.show()
-	app.exec_()
+    app = QApplication(args)
+    translator = getTranslator()
+    app.installTranslator(translator)
+    form = MainWindow()
+    activateSplashScreen().finish(form)
+    form.show()
+    app.exec_()
+
 
 def getTranslator():
-	translator = QTranslator()
-	locale = QLocale.system().name()
-	if translator.load(repr(os.path.dirname(\
-			os.path.realpath(sys.argv[0]))).replace("\\\\","/")\
-			.replace("\'","")+"/locale/UFO_"+locale+".qm") :
-		return translator
+    translator = QTranslator()
+    locale = QLocale.system().name()
+    if translator.load(repr(os.path.dirname(
+            os.path.realpath(sys.argv[0]))).replace("\\\\", "/")
+            .replace("\'", "") + "/locale/UFO_" + locale + ".qm"):
+        return translator
+
 
 def activateSplashScreen():
-	splash_pix = QPixmap(repr(os.path.dirname(\
-			os.path.realpath(sys.argv[0]))).replace("\\\\","/")\
-			.replace("\'","")+"/pics/splash.png")
-	splash = QSplashScreen( splash_pix)
-	splash.setMask(splash_pix.mask())
-	splash.show()
-	time.sleep(2)
-	return splash
+    splash_pix = QPixmap(repr(os.path.dirname(
+        os.path.realpath(sys.argv[0]))).replace("\\\\", "/")
+        .replace("\'", "") + "/pics/splash.png")
+    splash = QSplashScreen(splash_pix)
+    splash.setMask(splash_pix.mask())
+    splash.show()
+    time.sleep(2)
+    return splash
+
 
 class MainWindow(QMainWindow):
-	def __init__(self, parent=None):
-		QMainWindow.__init__(self)
+    def __init__(self, parent=None):
+        QMainWindow.__init__(self)
 
-		self.setWindowTitle("Ufo Wardriving")
-		self.setWindowIcon(getQIcon("ufo.png"))
-		self.statusBar().showMessage("I want to belive")
-		self.mainWidget = QWidget(self)
+        self.setWindowTitle("Ufo Wardriving")
+        self.setWindowIcon(getQIcon("ufo.png"))
+        self.statusBar().showMessage("I want to belive")
+        self.mainWidget = QWidget(self)
 
-		exitAction = QAction(getQIcon("exit.png"), '&Exit', self)
-		exitAction.setShortcut('Ctrl+Q')
-		exitAction.setStatusTip(self.tr("Exit application"))
-		exitAction.triggered.connect(qApp.quit)
-		def donazione():
-			webbrowser.open("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JBQXLC8J5SWTA")
+        exitAction = QAction(getQIcon("exit.png"), '&Exit', self)
+        exitAction.setShortcut('Ctrl+Q')
+        exitAction.setStatusTip(self.tr("Exit application"))
+        exitAction.triggered.connect(qApp.quit)
 
-		def homepage():
-			webbrowser.open("http://www.thc-scripting.it/ufowardriving/")
+        def donazione():
+            webbrowser.open("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JBQXLC8J5SWTA")
 
-		def showScanner():
-			if scanWidget.isVisible() == 1:
-				scanWidget.setVisible(0)
-				scanWidget.timer.stop()
-			else:
-				if (platform.system() == 'Windows'):
-					cmd_test = "netsh wlan show networks mode=bssid"
-					try:
-						out = subprocess.check_output(cmd_test, shell=True)
-						scanWidget.setVisible(1)
-						scanWidget.timer.start()
-					except subprocess.CalledProcessError:
-						msgBox = QMessageBox()
-						msgBox.setWindowTitle(self.tr("Windows Vista and later!"))
-						msgBox.setText(self.tr("Sorry, This feature is only for Windows Vista and later."))
-						msgBox.setIcon(QMessageBox.Warning)
-						msgBox.setDefaultButton(QMessageBox.Ok)
-						ret = msgBox.exec_()
-						return
-				else:
-					scanWidget.setVisible(1)
-					scanWidget.timer.start()
+        def homepage():
+            webbrowser.open("http://www.thc-scripting.it/ufowardriving/")
 
-		homeAction = QAction(getQIcon("home.png"), self.tr("&Project home page"), self)
-		homeAction.setShortcut('Ctrl+H')
-		homeAction.setStatusTip(self.tr("Project home page"))
-		homeAction.triggered.connect(homepage)
+        def showScanner():
+            if scanWidget.isVisible() == 1:
+                scanWidget.setVisible(0)
+                scanWidget.timer.stop()
+            else:
+                if (platform.system() == 'Windows'):
+                    cmd_test = "netsh wlan show networks mode=bssid"
+                    try:
+                        out = subprocess.check_output(cmd_test, shell=True)
+                        scanWidget.setVisible(1)
+                        scanWidget.timer.start()
+                    except subprocess.CalledProcessError:
+                        msgBox = QMessageBox()
+                        msgBox.setWindowTitle(self.tr("Windows Vista and later!"))
+                        msgBox.setText(self.tr("Sorry, This feature is only for Windows Vista and later."))
+                        msgBox.setIcon(QMessageBox.Warning)
+                        msgBox.setDefaultButton(QMessageBox.Ok)
+                        ret = msgBox.exec_()
+                        return
+                else:
+                    scanWidget.setVisible(1)
+                    scanWidget.timer.start()
 
-		donAction = QAction(getQIcon("donation.png"), self.tr("Make a donation"), self)
-		donAction.setShortcut('Ctrl+D')
-		donAction.setStatusTip(self.tr("Donation"))
-		donAction.triggered.connect(donazione)
+        homeAction = QAction(getQIcon("home.png"), self.tr("&Project home page"), self)
+        homeAction.setShortcut('Ctrl+H')
+        homeAction.setStatusTip(self.tr("Project home page"))
+        homeAction.triggered.connect(homepage)
 
-		scanAction = QAction(getQIcon("wifi.png"), '&Scanner', self)
-		scanAction.setShortcut('Ctrl+D')
-		scanAction.setStatusTip(self.tr("Show the wifi scanner\nWarning!\nOnly for linux!"))
-		scanAction.triggered.connect(showScanner)
+        donAction = QAction(getQIcon("donation.png"), self.tr("Make a donation"), self)
+        donAction.setShortcut('Ctrl+D')
+        donAction.setStatusTip(self.tr("Donation"))
+        donAction.triggered.connect(donazione)
 
-		menubar = self.menuBar()
-		fileMenu = menubar.addMenu(self.tr("&File"))
-		fileMenu.addAction(exitAction)
+        scanAction = QAction(getQIcon("wifi.png"), '&Scanner', self)
+        scanAction.setShortcut('Ctrl+D')
+        scanAction.setStatusTip(self.tr("Show the wifi scanner\nWarning!\nOnly for linux!"))
+        scanAction.triggered.connect(showScanner)
 
-		toolsMenu = menubar.addMenu(self.tr("&Tools"))
-		toolsMenu.addAction(scanAction)
+        menubar = self.menuBar()
+        fileMenu = menubar.addMenu(self.tr("&File"))
+        fileMenu.addAction(exitAction)
 
-		infoMenu = menubar.addMenu(self.tr("&Info"))
-		infoMenu.addAction(homeAction)
-		infoMenu.addAction(donAction)
+        toolsMenu = menubar.addMenu(self.tr("&Tools"))
+        toolsMenu.addAction(scanAction)
 
-		hBox = QHBoxLayout(self.mainWidget)
-		hBox.setSpacing(5)
+        infoMenu = menubar.addMenu(self.tr("&Info"))
+        infoMenu.addAction(homeAction)
+        infoMenu.addAction(donAction)
 
-		self.tabWidget = QTabWidget(self.mainWidget)
-		hBox.addWidget(self.tabWidget)
+        hBox = QHBoxLayout(self.mainWidget)
+        hBox.setSpacing(5)
 
-		scanWidget= scannerGuiWidget(self)
-		hBox.addWidget(scanWidget)
-		scanWidget.setVisible(0)
+        self.tabWidget = QTabWidget(self.mainWidget)
+        hBox.addWidget(self.tabWidget)
 
-		self.fastwebTab	= QWidget(self.tabWidget)
-		self.speedTab	= QWidget(self.tabWidget)
-		self.teletuTab	= QWidget(self.tabWidget)
-		self.infostradaTab	= QWidget(self.tabWidget)
-		self.aliceTab	= QWidget(self.tabWidget)
-		self.dlinkTab	= QWidget(self.tabWidget)
-		self.huaweiTab	= QWidget(self.tabWidget)
-		self.jazztelTab	= QWidget(self.tabWidget)
-		self.yacomTab	= QWidget(self.tabWidget)
+        scanWidget = scannerGuiWidget(self)
+        hBox.addWidget(scanWidget)
+        scanWidget.setVisible(0)
 
-		self.tabWidget.addTab(self.fastwebTab,getQIcon("fastweb.png"),"Fastweb")
-		self.tabWidget.addTab(self.speedTab,getQIcon("speedtouch.png"),"Speedtouch")
-		self.tabWidget.addTab(self.teletuTab,getQIcon("teletu.png"),"TeleTu")
-		self.tabWidget.addTab(self.infostradaTab,getQIcon("infostrada.png"),"Infostrada")
-		self.tabWidget.addTab(self.aliceTab,getQIcon("alice.png"),"Alice")
-		self.tabWidget.addTab(self.dlinkTab,getQIcon("dlink.png"),"DLink")
-		self.tabWidget.addTab(self.huaweiTab,getQIcon("huawei.png"),"Huawei")
-		self.tabWidget.addTab(self.jazztelTab,getQIcon("jazztel.png"),"Jazztel")
-		self.tabWidget.addTab(self.yacomTab,getQIcon("yacom.png"),"YaCom")
+        self.fastwebTab = QWidget(self.tabWidget)
+        self.speedTab = QWidget(self.tabWidget)
+        self.teletuTab = QWidget(self.tabWidget)
+        self.infostradaTab = QWidget(self.tabWidget)
+        self.aliceTab = QWidget(self.tabWidget)
+        self.dlinkTab = QWidget(self.tabWidget)
+        self.huaweiTab = QWidget(self.tabWidget)
+        self.jazztelTab = QWidget(self.tabWidget)
+        self.yacomTab = QWidget(self.tabWidget)
 
-		vBoxlayoutFast		= QVBoxLayout()
-		vBoxlayoutSpeed		= QVBoxLayout()
-		vBoxlayoutInfostrada	= QVBoxLayout()
-		vBoxlayoutTeletu	= QVBoxLayout()
-		vBoxlayoutAlice		= QVBoxLayout()
-		vBoxlayoutDlink		= QVBoxLayout()
-		vBoxlayoutHuawei	= QVBoxLayout()
-		vBoxlayoutJazztel	= QVBoxLayout()
-		vBoxlayoutYacom		= QVBoxLayout()
+        self.tabWidget.addTab(self.fastwebTab, getQIcon("fastweb.png"), "Fastweb")
+        self.tabWidget.addTab(self.speedTab, getQIcon("speedtouch.png"), "Speedtouch")
+        self.tabWidget.addTab(self.teletuTab, getQIcon("teletu.png"), "TeleTu")
+        self.tabWidget.addTab(self.infostradaTab, getQIcon("infostrada.png"), "Infostrada")
+        self.tabWidget.addTab(self.aliceTab, getQIcon("alice.png"), "Alice")
+        self.tabWidget.addTab(self.dlinkTab, getQIcon("dlink.png"), "DLink")
+        self.tabWidget.addTab(self.huaweiTab, getQIcon("huawei.png"), "Huawei")
+        self.tabWidget.addTab(self.jazztelTab, getQIcon("jazztel.png"), "Jazztel")
+        self.tabWidget.addTab(self.yacomTab, getQIcon("yacom.png"), "YaCom")
 
-		self.fastGuiWidget		= fastGuiWidget()
-		self.speedGuiWidget		= speedGuiWidget()
-		self.infostradaGuiWidget	= infostradaGuiWidget()
-		self.teletuGuiWidget		= teletuGuiWidget()
-		self.aliceGuiWidget		= aliceGuiWidget()
-		self.dlinkGuiWidget		= dlinkGuiWidget()
-		self.huaweiGuiWidget		= huaweiGuiWidget()
-		self.jazztelGuiWidget		= jazztelGuiWidget()
-		self.yacomGuiWidget		= yacomGuiWidget()
+        vBoxlayoutFast = QVBoxLayout()
+        vBoxlayoutSpeed = QVBoxLayout()
+        vBoxlayoutInfostrada = QVBoxLayout()
+        vBoxlayoutTeletu = QVBoxLayout()
+        vBoxlayoutAlice = QVBoxLayout()
+        vBoxlayoutDlink = QVBoxLayout()
+        vBoxlayoutHuawei = QVBoxLayout()
+        vBoxlayoutJazztel = QVBoxLayout()
+        vBoxlayoutYacom = QVBoxLayout()
 
-		vBoxlayoutFast.addWidget(self.fastGuiWidget)
-		vBoxlayoutSpeed.addWidget(self.speedGuiWidget)
-		vBoxlayoutInfostrada.addWidget(self.infostradaGuiWidget)
-		vBoxlayoutTeletu.addWidget(self.teletuGuiWidget)
-		vBoxlayoutAlice.addWidget(self.aliceGuiWidget)
-		vBoxlayoutDlink.addWidget(self.dlinkGuiWidget)
-		vBoxlayoutHuawei.addWidget(self.huaweiGuiWidget)
-		vBoxlayoutJazztel.addWidget(self.jazztelGuiWidget)
-		vBoxlayoutYacom.addWidget(self.yacomGuiWidget)
+        self.fastGuiWidget = fastGuiWidget()
+        self.speedGuiWidget = speedGuiWidget()
+        self.infostradaGuiWidget = infostradaGuiWidget()
+        self.teletuGuiWidget = teletuGuiWidget()
+        self.aliceGuiWidget = aliceGuiWidget()
+        self.dlinkGuiWidget = dlinkGuiWidget()
+        self.huaweiGuiWidget = huaweiGuiWidget()
+        self.jazztelGuiWidget = jazztelGuiWidget()
+        self.yacomGuiWidget = yacomGuiWidget()
 
-		self.fastwebTab.setLayout(vBoxlayoutFast)
-		self.speedTab.setLayout(vBoxlayoutSpeed)
-		self.infostradaTab.setLayout(vBoxlayoutInfostrada)
-		self.teletuTab.setLayout(vBoxlayoutTeletu)
-		self.aliceTab.setLayout(vBoxlayoutAlice)
-		self.dlinkTab.setLayout(vBoxlayoutDlink)
-		self.huaweiTab.setLayout(vBoxlayoutHuawei)
-		self.jazztelTab.setLayout(vBoxlayoutJazztel)
-		self.yacomTab.setLayout(vBoxlayoutYacom)
+        vBoxlayoutFast.addWidget(self.fastGuiWidget)
+        vBoxlayoutSpeed.addWidget(self.speedGuiWidget)
+        vBoxlayoutInfostrada.addWidget(self.infostradaGuiWidget)
+        vBoxlayoutTeletu.addWidget(self.teletuGuiWidget)
+        vBoxlayoutAlice.addWidget(self.aliceGuiWidget)
+        vBoxlayoutDlink.addWidget(self.dlinkGuiWidget)
+        vBoxlayoutHuawei.addWidget(self.huaweiGuiWidget)
+        vBoxlayoutJazztel.addWidget(self.jazztelGuiWidget)
+        vBoxlayoutYacom.addWidget(self.yacomGuiWidget)
 
-		self.mainWidget.setLayout(hBox)
-		self.setCentralWidget(self.mainWidget)
+        self.fastwebTab.setLayout(vBoxlayoutFast)
+        self.speedTab.setLayout(vBoxlayoutSpeed)
+        self.infostradaTab.setLayout(vBoxlayoutInfostrada)
+        self.teletuTab.setLayout(vBoxlayoutTeletu)
+        self.aliceTab.setLayout(vBoxlayoutAlice)
+        self.dlinkTab.setLayout(vBoxlayoutDlink)
+        self.huaweiTab.setLayout(vBoxlayoutHuawei)
+        self.jazztelTab.setLayout(vBoxlayoutJazztel)
+        self.yacomTab.setLayout(vBoxlayoutYacom)
+
+        self.mainWidget.setLayout(hBox)
+        self.setCentralWidget(self.mainWidget)
 
 
-
-if __name__=="__main__":
+if __name__ == "__main__":
     main(sys.argv)

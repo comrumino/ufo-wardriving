@@ -30,90 +30,103 @@
 from PyQt5.QtWidgets import QListWidgetItem
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-import sys, os.path,platform
+import sys
+import os.path
+import platform
 
 from core.ufo_picsfinder import getQIcon
 
+
 class scannViewElement(QListWidgetItem):
-	def __init__(self,parent = None):
-		QListWidgetItem.__init__(self)
+    def __init__(self, parent=None):
+        QListWidgetItem.__init__(self)
 #		super(scannViewElement, self).__init__(parent) // Non funziona come super
-		self.setIcon(getQIcon("wifi25.png"))
-		self.essidString =" - "
-		self.macString=" - "
-		self.signalString=" - "
-		self.chanString=""
-		self.freqString=" - "
-		self.encrString=" - "
-		self.encrString2=" - "
-		self.dBmValue=25
+        self.setIcon(getQIcon("wifi25.png"))
+        self.essidString = " - "
+        self.macString = " - "
+        self.signalString = " - "
+        self.chanString = ""
+        self.freqString = " - "
+        self.encrString = " - "
+        self.encrString2 = " - "
+        self.dBmValue = 25
 
-	def setdBmValue(self, dBm):
-		if (platform.system() != 'Windows'):
-			self.dBmValue=self.dBmToPercentage(dBm)
-			i_dBm = self.dBmValue
-		else:
-			self.dBmValue = dBm
-			i_dBm = dBm
-		if  i_dBm >=0 and i_dBm <26: 	self.setIcon(getQIcon("wifi25.png"))
-		if  i_dBm >25 and i_dBm <51:	self.setIcon(getQIcon("wifi50.png"))
-		if  i_dBm >50 and i_dBm <76:	self.setIcon(getQIcon("wifi75.png"))
-		if  i_dBm >75 and i_dBm <=100:	self.setIcon(getQIcon("wifi100.png"))
-		
-	def dBmToPercentage(self,dbm):
-			# In linea di massima: non c'e' una vera corrispondenza tra dBm e percentuale
-			dbm =int(dbm)
-			if dbm > -55:				return 100
-			if dbm < -55 and dbm > -72:	return 75
-			if dbm < -72 and dbm > -84:	return 50
-			if dbm < -84:				return 25
+    def setdBmValue(self, dBm):
+        if (platform.system() != 'Windows'):
+            self.dBmValue = self.dBmToPercentage(dBm)
+            i_dBm = self.dBmValue
+        else:
+            self.dBmValue = dBm
+            i_dBm = dBm
+        if i_dBm >= 0 and i_dBm < 26:
+            self.setIcon(getQIcon("wifi25.png"))
+        if i_dBm > 25 and i_dBm < 51:
+            self.setIcon(getQIcon("wifi50.png"))
+        if i_dBm > 50 and i_dBm < 76:
+            self.setIcon(getQIcon("wifi75.png"))
+        if i_dBm > 75 and i_dBm <= 100:
+            self.setIcon(getQIcon("wifi100.png"))
 
+    def dBmToPercentage(self, dbm):
+            # In linea di massima: non c'e' una vera corrispondenza tra dBm e percentuale
+        dbm = int(dbm)
+        if dbm > -55:
+            return 100
+        if dbm < -55 and dbm > -72:
+            return 75
+        if dbm < -72 and dbm > -84:
+            return 50
+        if dbm < -84:
+            return 25
 
-	def setSsid(self,ssid):
-		self.setText(ssid)
+    def setSsid(self, ssid):
+        self.setText(ssid)
 
-	def setMac(self,mac):
-		self.macString = mac
+    def setMac(self, mac):
+        self.macString = mac
 
-	def setSignal(self,signal):
-		self.signalString = signal
+    def setSignal(self, signal):
+        self.signalString = signal
 
-	def setFrequency(self,freq):
-		self.freqString = freq
+    def setFrequency(self, freq):
+        self.freqString = freq
 
-	def setChannel(self,chan):
-		self.chanString = chan
+    def setChannel(self, chan):
+        self.chanString = chan
 
-	def setEncription(self,encr):
-		self.encrString = encr
+    def setEncription(self, encr):
+        self.encrString = encr
 
-	def setEncription2(self,encr):
-		self.encrString2 = encr
+    def setEncription2(self, encr):
+        self.encrString2 = encr
 
-	def setInfo(self):
-		if self.macString != "":
-			self.setToolTip("Address: "+self.macString+"\n"+"Quality: "+self.signalString+"\n"+"Frequency: "+self.freqString+"\n"+"Channel: "+self.chanString+"\n"+"IE Encription: "+self.encrString+"\n"+"IEEE Encription: "+self.encrString2)
-	def setWinInfo(self):
-		if self.macString != "":
-			self.setToolTip("Address: "+self.macString+"\n"+"Quality: "+str(self.signalString)+"\n"+"Frequency: "+self.freqString+"\n"+"Channel: "+self.chanString+"\n"+"Encription: "+self.encrString+"/"+self.encrString2)
+    def setInfo(self):
+        if self.macString != "":
+            self.setToolTip("Address: " + self.macString + "\n" + "Quality: " + self.signalString + "\n" + "Frequency: " + self.freqString +
+                            "\n" + "Channel: " + self.chanString + "\n" + "IE Encription: " + self.encrString + "\n" + "IEEE Encription: " + self.encrString2)
 
-	def getSsid(self):
-		return self.essidString
+    def setWinInfo(self):
+        if self.macString != "":
+            self.setToolTip("Address: " + self.macString + "\n" + "Quality: " + str(self.signalString) + "\n" + "Frequency: " +
+                            self.freqString + "\n" + "Channel: " + self.chanString + "\n" + "Encription: " + self.encrString + "/" + self.encrString2)
 
-	def getMac(self):
-		return self.macString
+    def getSsid(self):
+        return self.essidString
 
-	def getSignal(self):
-		return self.signalString
+    def getMac(self):
+        return self.macString
 
-	def getFrequency(self):
-		return self.freqString
+    def getSignal(self):
+        return self.signalString
 
-	def getChannel(self):
-		return self.chanString
+    def getFrequency(self):
+        return self.freqString
 
-	def getEncription(self):
-		return self.encrString
+    def getChannel(self):
+        return self.chanString
 
-	def getEncription2(self):
-		return self.encrString2
+    def getEncription(self):
+        return self.encrString
+
+    def getEncription2(self):
+        return self.encrString2

@@ -1,4 +1,7 @@
 ﻿======================================
+25 Augest 2019
+-Rewrite using PyQt5 as PyQt4 is deprecated
+======================================
 22 Dicembre 2012
 -Scanner WIFI:	-migliorata compatibilità nel codice (un solo file per linux e windows)
 		-aggiunto scanner attivabile se si è su windows vista e superiori
