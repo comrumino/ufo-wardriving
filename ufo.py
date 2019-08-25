@@ -153,11 +153,9 @@ class MainWindow(QMainWindow):
 		self.tabWidget = QTabWidget(self.mainWidget)
 		hBox.addWidget(self.tabWidget)
 
-                print('c')
 		scanWidget= scannerGuiWidget(self)
 		hBox.addWidget(scanWidget)
 		scanWidget.setVisible(0)
-                print('d')
 
 		self.fastwebTab	= QWidget(self.tabWidget)
 		self.speedTab	= QWidget(self.tabWidget)
